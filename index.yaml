@@ -9,6 +9,6 @@ entries:
     name: common-chart
     type: application
     urls:
-    - https://github.vodafone.com/pages/VFGR-DXL-Microservices/VFGR_Lib_Common_HelmChart/common-chart-0.1.0.tgz
+    - https://dinagamalmahmoud.github.io/helm-charts/common-chart-0.1.0.tgz
     version: 0.1.0
 generated: "2020-09-11T18:48:18.839053+02:00"
