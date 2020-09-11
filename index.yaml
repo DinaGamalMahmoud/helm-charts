@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  common-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2020-09-11T18:48:18.841559+02:00"
+    description: A library Helm chart for Kubernetes
+    digest: 48f4b35dd75928de5045ccb4a73c4c8bfd779998f5f14ea86e6ad928699e2ca9
+    name: common-chart
+    type: application
+    urls:
+    - https://github.vodafone.com/pages/VFGR-DXL-Microservices/VFGR_Lib_Common_HelmChart/common-chart-0.1.0.tgz
+    version: 0.1.0
+generated: "2020-09-11T18:48:18.839053+02:00"
