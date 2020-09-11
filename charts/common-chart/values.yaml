@@ -1,4 +1,6 @@
 replicaCount: 1
+image: IMAGE_NAME
+namespace: dxl-dev-gr
 resources:
   requests:
     memory: "100Mi"

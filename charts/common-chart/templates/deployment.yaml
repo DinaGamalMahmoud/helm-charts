@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: application
-        image: IMAGE_NAME
+        image: {{ .Values.image }}
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
