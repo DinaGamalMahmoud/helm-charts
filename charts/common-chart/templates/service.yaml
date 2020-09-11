@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+    env: dxl-{{ .Release.Namespace }}-gr
+  name: {{ .Release.Name }}
+  namespace: dxl-{{ .Release.Namespace }}-gr
+spec:
+  selector:
+    app: {{ .Release.Name }}
+    env: dxl-{{ .Release.Namespace }}-gr
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

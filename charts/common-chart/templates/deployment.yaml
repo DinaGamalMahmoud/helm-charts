@@ -1,0 +1,68 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+    env: dxl-{{ .Release.Namespace }}-gr
+    jobs: ShutdownStartup
+  name: {{ .Release.Name }}
+  namespace: dxl-{{ .Release.Namespace }}-gr
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 33%
+      maxSurge: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+        env: dxl-{{ .Release.Namespace }}-gr
+    spec:
+      containers:
+      - name: application
+        image: IMAGE_NAME
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health/live
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 10
+        env:
+        - name: JAVA_OPTS
+          value: {{ .Values.java_opts }}
+        - name: ENCRYPTION_KEY
+          value: DXL_Encryption_Key
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory}}
+            cpu: {{ .Values.resources.limits.cpu}}
+          limits:
+            memory: {{ .Values.resources.limits.memory}}
+            cpu: {{ .Values.resources.limits.cpu}}
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - mountPath: /config
+          name: application-config-{{ .Release.Name }}
+      volumes:
+      - name: application-config-{{ .Release.Name }}
+        configMap:
+          name: application-config-{{ .Release.Name }}

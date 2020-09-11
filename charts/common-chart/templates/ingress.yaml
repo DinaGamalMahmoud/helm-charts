@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
+    nginx.ingress.kubernetes.io/auth-tls-secret: dxl-{{ .Release.Namespace }}-gr/pkiv01-wildcard-cert
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "3"
+  labels:
+    app: {{ .Release.Name }}
+    env: dxl-{{ .Release.Namespace }}-gr
+  name: {{ .Release.Name }}
+  namespace: dxl-{{ .Release.Namespace }}-gr
+spec:
+  tls:
+  - hosts:
+    - {{ .Release.Name }}-gr-{{ .Release.Namespace }}.myvdf.aws.cps.vodafone.com
+    secretName: pkiv01-myvdf-wildcard-cert
+  - hosts:
+    - {{ .Release.Name }}-gr-{{ .Release.Namespace }}.myvdf-internal.aws.cps.vodafone.com
+    secretName: tls-secret
+  rules:
+  - host: {{ .Release.Name }}-gr-{{ .Release.Namespace }}.myvdf.aws.cps.vodafone.com
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .Release.Name }}
+          servicePort: 8080
+        path: /
+  - host: {{ .Release.Name }}-gr-{{ .Release.Namespace }}.myvdf-internal.aws.cps.vodafone.com
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .Release.Name }}
+          servicePort: 8080
+        path: /
+status:
+  loadBalancer:
+    ingress:
+    - {}
+
